@@ -19,6 +19,10 @@ GSM antenna. The chip understands AT commands.
 I bought a normal prepaid comviq sim card. This has 3G and data but I won't
 use that.
 
+Photos:
+<img src="http://github.com/danmar/mobilephone/blob/master/images/1.jpg" height="200">
+<img src="http://github.com/danmar/mobilephone/blob/master/images/2.jpg" height="200">
+
 ### Step 2 : Setup
 
 I connected everything and tried to setup the chip for the GSM card. It was
@@ -33,5 +37,18 @@ Now I plan to connect microphone and speaker. The datasheet for SM5100B has
 reference designs that I will try to use.
 
 According to the datasheet, the speaker can be connected directly to output
-pins on the chip and therefore I wanted to take a measurement to see what
-the output looks like.
+pins on the chip.
+
+I made this connection:
+  GSM chip speaker output => voltage divider => microphone input on my PC
+And then made two measurements:
+  1. oscilloscope view when I whizzle in the other phone
+  2. audio recording when I say test, test. It's very faint.
+
+Photos
+<img src="http://github.com/danmar/mobilephone/blob/master/images/3a.jpg" height="200">
+<img src="http://github.com/danmar/mobilephone/blob/master/images/3b.jpg" height="200">
+
+Audio recording:
+http://github.com/danmar/mobilephone/blob/master/images/3.wma
+

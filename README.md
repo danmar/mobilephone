@@ -19,7 +19,6 @@ GSM antenna. The chip understands AT commands.
 I bought a normal prepaid comviq sim card. This has 3G and data but I won't
 use that.
 
-Photo:
 ![alt text](http://github.com/danmar/mobilephone/raw/master/images/1-mini.png "Chip")
 
 ### Step 2 : Setup
@@ -40,10 +39,13 @@ pins on the chip.
 
 I made this connection:
   GSM chip speaker output => voltage divider => microphone input on my PC
+
 ![alt text](http://github.com/danmar/mobilephone/raw/master/images/3a-mini.png "Connection")
 
 Oscilloscope view when I whizzle in the other phone
-![alt text](http://github.com/danmar/mobilephone/raw/master/images/3b-mini.png "Oscilloscope view")
+
+![alt text](http://github.com/danmar/mobilephone/raw/master/images/3b.png "Oscilloscope view")
 
 Audio recording when I say test, test. It's very faint.
+
 http://github.com/danmar/mobilephone/raw/master/images/3.wma

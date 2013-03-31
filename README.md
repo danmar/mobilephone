@@ -20,8 +20,8 @@ I bought a normal prepaid comviq sim card. This has 3G and data but I won't
 use that.
 
 Photos:
-<img src="http://github.com/danmar/mobilephone/blob/master/images/1.jpg" height="200">
-<img src="http://github.com/danmar/mobilephone/blob/master/images/2.jpg" height="200">
+![alt text](http://github.com/danmar/mobilephone/blob/master/images/1.jpg Chip (closeup))
+![alt text](http://github.com/danmar/mobilephone/blob/master/images/2.jpg Chip)
 
 ### Step 2 : Setup
 
@@ -46,8 +46,8 @@ And then made two measurements:
   2. audio recording when I say test, test. It's very faint.
 
 Photos
-<img src="http://github.com/danmar/mobilephone/blob/master/images/3a.jpg" height="200">
-<img src="http://github.com/danmar/mobilephone/blob/master/images/3b.jpg" height="200">
+![alt text](http://github.com/danmar/mobilephone/blob/master/images/3a.jpg Connection)
+![alt text](http://github.com/danmar/mobilephone/blob/master/images/3a.jpg Oscilloscope view)
 
 Audio recording:
 http://github.com/danmar/mobilephone/blob/master/images/3.wma

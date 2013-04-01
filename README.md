@@ -49,3 +49,7 @@ Oscilloscope view when I whizzle in the other phone
 Audio recording when I say test, test. It's very faint.
 
 http://github.com/danmar/mobilephone/raw/master/images/3.wma
+
+### Step 4 : Connecting the microcontroller to the GSM chip
+
+![alt text](http://github.com/danmar/mobilephone/raw/master/images/4-mini.png "MBED")

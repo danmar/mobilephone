@@ -16,8 +16,7 @@ Evidente.
 I bought a SM5100B GSM chip, a simple evaluation board for this chip, and a
 GSM antenna. The chip understands AT commands.
 
-I bought a normal prepaid comviq sim card. This has 3G and data but I won't
-use that.
+I bought a normal prepaid comviq sim card.
 
 ![alt text](http://github.com/danmar/mobilephone/raw/master/images/1-mini.png "Chip")
 
@@ -31,25 +30,36 @@ calls (however I have no audio yet).
 
 ### Step 3 : Audio
 
-Now I plan to connect microphone and speaker. The datasheet for SM5100B has
-reference designs that I will try to use.
+The plan in this "step" is to connect a microphone and speaker. The datasheet
+for SM5100B has reference designs for connecting microphone and speaker that
+I will try to use.
 
 According to the datasheet, the speaker can be connected directly to output
 pins on the chip.
 
-I made this connection:
+Before I had any parts, I wanted to "dry run" the audio. When a voice call is
+made, it should be possible to measure something on the speaker output. I made
+this connection:
   GSM chip speaker output => voltage divider => microphone input on my PC
 
 ![alt text](http://github.com/danmar/mobilephone/raw/master/images/3a-mini.png "Connection")
 
-Oscilloscope view when I whizzle in the other phone
+Oscilloscope view when I whizzle in the calling telephone
 
 ![alt text](http://github.com/danmar/mobilephone/raw/master/images/3b.png "Oscilloscope view")
 
-Audio recording when I say test, test. It's very faint.
+Audio recording when I say "test, test". It's very faint.
 
 http://github.com/danmar/mobilephone/raw/master/images/3.wma
 
+TODO: Connect microphone and speaker.
+
 ### Step 4 : Connecting the microcontroller to the GSM chip
 
+Here I have connected a MBED microcontroller to the UART0 port on the GSM chip:
+
 ![alt text](http://github.com/danmar/mobilephone/raw/master/images/4-mini.png "MBED")
+
+To start with the MBED just sends "AT" commands and then receive the response "OK".
+
+TODO: write better program that can make calls, answer calls, etc.

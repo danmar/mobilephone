@@ -6,7 +6,7 @@ voice calls.
 
 I will use off-the-shelf electronic components.
 
-The software development and electronic components will be sponsored by
+The software development and electronic components is sponsored by
 Evidente.
 
 ## Progress

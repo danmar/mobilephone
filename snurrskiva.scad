@@ -5,7 +5,7 @@ module snurrskiva(diameter,height)
 	difference() {
 		cylinder(h = height, r = radius, center = true, $fn=100);
 
-		for (i = [0:10]) {
+		for (i = [0:9]) {
 			translate([0.75*radius*sin(i*30),0.75*radius*cos(i*30),0]) {
 				cylinder(h=2*height, r=0.15*radius, center=true, $fn=100);
 				cylinder(h=2*height, r1=0, r2=0.25*radius, center=true, $fn=100);

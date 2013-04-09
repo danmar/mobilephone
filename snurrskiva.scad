@@ -1,17 +1,19 @@
-
-module snurrskiva()
+module snurrskiva(diameter,height)
 {
+	radius = diameter / 2;
+
 	difference() {
-		cylinder(h = 1, r1 = 40, r2 = 40, center = true);
+		cylinder(h = height, r = radius, center = true, $fn=100);
 
 		for (i = [0:10]) {
-			translate([30*sin(i*30),30*cos(i*30),0]) {
-				cylinder(h=2, r1=7, r2=7, center=true);
-				cylinder(h=2, r1=0, r2=10, center=true);
-				cylinder(h=2, r1=10, r2=0, center=true);
+			translate([0.75*radius*sin(i*30),0.75*radius*cos(i*30),0]) {
+				cylinder(h=2*height, r=0.15*radius, center=true, $fn=100);
+				cylinder(h=2*height, r1=0, r2=0.25*radius, center=true, $fn=100);
+				cylinder(h=2*height, r1=0.25*radius, r2=0, center=true, $fn=100);
 			}
 		}
 	}
 }
 
-snurrskiva();
+snurrskiva(60,2);
+

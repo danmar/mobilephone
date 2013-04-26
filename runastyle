@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ASTYLE_VERSION="Artistic Style Version 2."
+
+if [[ "`astyle --version 2>&1`" != ${ASTYLE_VERSION}* ]]; then
+    echo "You should use: ${ASTYLE_VERSION}";
+    exit 1;
+fi
+
+style="--style=stroustrup --indent=spaces=4 --indent-namespaces --lineend=linux --min-conditional-indent=0"
+options="--pad-header --unpad-paren --suffix=none --convert-tabs"
+
+astyle $style $options main.cpp
+unix2dos main.cpp
+

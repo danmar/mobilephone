@@ -8,8 +8,6 @@ DigitalOut led2(LED2);
 DigitalOut led3(LED3);
 DigitalOut led4(LED4);
 
-DigitalIn button(p19);
-
 static int readADC(int pin);
 
 static int getnumber()
@@ -260,14 +258,15 @@ static void initADC(int pins)
                     | (1 << 21);   // PDN
 }
 
-#define AD_CR_START_MASK   (7<<24)
-#define AD_CR_START_NOW    (1<<24)
-#define AD_CR_SELMASK      (0xff)
-#define AD_DR_DONE         (1UL<<31)
-
 static int readADC(int pin)
 {
-    LPC_GPIO1->FIOPIN = LED1;
+    static const int AD_CR_START_MASK = 7 << 24;
+    static const int AD_CR_START_NOW  = 1 << 24;
+    static const int AD_CR_SELMASK    = 0xff;
+    static const int AD_DR_DONE       = 1UL << 31;
+
+    if (pin < 15 || pin > 20)
+        return 0;
 
     // Stop ADC
     LPC_ADC->ADCR &= ~(AD_CR_START_MASK | AD_CR_SELMASK);
@@ -275,13 +274,9 @@ static int readADC(int pin)
     // Start conversion
     LPC_ADC->ADCR |= (AD_CR_START_NOW | (1 << (pin-15)));
 
-    LPC_GPIO1->FIOPIN = LED2;
-
     // Wait for conversion done
     while ((LPC_ADC->ADGDR & AD_DR_DONE) == 0)
         ;
-
-    LPC_GPIO1->FIOPIN = LED3;
 
     // Return result
     return ((LPC_ADC->ADGDR >> 4) & 0xfff);
@@ -324,4 +319,3 @@ int main()
 
     return 0;
 }
-

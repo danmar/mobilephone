@@ -67,11 +67,11 @@ reference circuits from the datasheets worked fine!
 
 Internal view:
 
-![alt text](http://github.com/danmar/mobilephone/raw/master/images/5b-mini.png "Internal")
+![alt text](http://github.com/danmar/mobilephone/raw/master/images/5b-mini.jpg "Internal")
 
 External view:
 
-![alt text](http://github.com/danmar/mobilephone/raw/master/images/5a-mini.png "External")
+![alt text](http://github.com/danmar/mobilephone/raw/master/images/5a-mini.jpg "External")
 
 The dialer is both used to dial numbers and to answer / hang up. By spinning the dialer
 all the way twice you answer and hang up.

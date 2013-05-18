@@ -63,3 +63,21 @@ Here I have connected a MBED microcontroller to the UART0 port on the GSM chip:
 To start with the MBED just sends "AT" commands and then receive the response "OK".
 
 TODO: write better program that can make calls, answer calls, etc.
+
+### Step 5 : Prototype box
+
+I bought a small box.
+
+Internal view:
+
+![alt text](http://github.com/danmar/mobilephone/raw/master/images/5b-mini.png "Internal")
+
+External view:
+
+![alt text](http://github.com/danmar/mobilephone/raw/master/images/5a-mini.png "External")
+
+The dialer is both used to dial numbers and to answer / hang up. By spinning the dialer
+all the way twice you answer and hang up.
+
+It works when using a AC/DC power adaptor. But unfortunately it doesn't work well from a
+battery. I use a normal 9V battery right now. This may be too weak.

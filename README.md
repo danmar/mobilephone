@@ -52,8 +52,6 @@ Audio recording when I say "test, test". It's very faint.
 
 http://github.com/danmar/mobilephone/raw/master/images/3.wma
 
-TODO: Connect microphone and speaker.
-
 ### Step 4 : Connecting the microcontroller to the GSM chip
 
 Here I have connected a MBED microcontroller to the UART0 port on the GSM chip:
@@ -62,11 +60,10 @@ Here I have connected a MBED microcontroller to the UART0 port on the GSM chip:
 
 To start with the MBED just sends "AT" commands and then receive the response "OK".
 
-TODO: write better program that can make calls, answer calls, etc.
-
 ### Step 5 : Prototype box
 
-I bought a small box.
+I bought a small box. The microphone and speaker I bought was connected. The
+reference circuits from the datasheets worked fine!
 
 Internal view:
 

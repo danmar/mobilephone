@@ -8,16 +8,16 @@ DigitalOut led2(LED2);
 DigitalOut led3(LED3);
 DigitalOut led4(LED4);
 
+PwmOut buzzer(p23);
+
 static int readADC(int pin);
 
-static int getnumber()
+static int getDialRawValue()
 {
     int x = 1000 * readADC(19) / readADC(20);
-    if (x < 10)
-        return -1;
-    if (x > 990)
-        return -2;
-    return x / 100;
+    if (x > 1000)
+        x = 1000;
+    return 1000 - x;
 }
 
 void restart()
@@ -69,6 +69,8 @@ void startPhone()
     led2 = 0;
     led3 = 0;
     led4 = 0;
+    
+    buzzer = 0;
 }
 
 void phone()
@@ -77,8 +79,6 @@ void phone()
     int ringcounter = 0;
     int ringcounter2 = 0;
     int ringcode = 0;
-
-    char dialnumber[32] = {0};
 
     enum { WAIT, DIAL, TALK } status = WAIT;
 
@@ -96,6 +96,7 @@ void phone()
             led2 = ringcounter & 1;
             led3 = ringcounter & 1;
             led4 = ringcounter & 1;
+            buzzer = (ringcounter & 1) * 0.5;
         }
 
         if (ringcounter2 > 0)
@@ -105,31 +106,44 @@ void phone()
 
         // Dial number..
         if (status == WAIT && ringcounter2 == 0) {
-            static int numcount = 0;
-            static int oldnum = -1;
-            const int num = getnumber();
-            if (num > 0 && num == oldnum)
-                numcount++;
-            else
-                numcount = 0;
-            oldnum = num;
+            static int maxDialRawValue = 0;
+            const int dialRawValue = getDialRawValue();
+            if (dialRawValue > maxDialRawValue)
+                maxDialRawValue = dialRawValue;
+            if (dialRawValue == 0 && maxDialRawValue > 20) {
+                static const int rawValue[] = { 30, 155, 252, 390, 500, 620, 750, 860, 970, 1000 };
+                int num = (maxDialRawValue == 1000) ? 9 : 0;
+                while (maxDialRawValue > rawValue[num] + 40)
+                    num++;
+                if (maxDialRawValue < rawValue[num] - 40) {
+                    pc.printf("nr: %i\n", maxDialRawValue);
+                    maxDialRawValue = 0;
+                    continue;
+                }
+                pc.printf("nr: %i %i ", num, maxDialRawValue);
+                maxDialRawValue = 0;
 
-            if (num==-1 || num==-2)
-                memset(dialnumber, 0, sizeof(dialnumber));
+                static char dialnumber[32];
+                int i = 0;
+                while (i < 30 && dialnumber[i] != '\0')
+                    i++;
+                dialnumber[i] = '0' + num;
 
-            if (numcount == 1)
-                pc.printf("%i\n", num);
-            if (numcount == 40) {
-                char *p = dialnumber;
-                while (*p != '\0')
-                    p++;
-                *p = '0' + num;
-                pc.printf("%s\n", dialnumber);
+                if (i >= 2 && strcmp(dialnumber+i-2, "999") == 0)
+                    memset(dialnumber, 0, sizeof(dialnumber));
 
-                if (dialnumber[0] != '\0') {
-                    if (strcmp(dialnumber, "5") == 0) {
+                if (i == 0 && num == '9')
+                    memset(dialnumber, 0, sizeof(dialnumber));
+
+                pc.printf("dialnr=%s\n", dialnumber);
+
+                if (dialnumber[9] != '\0') {
+                    if (strcmp(dialnumber, "0709124262") == 0 || strcmp(dialnumber, "0736156826") == 0) {
                         status = DIAL;
-                        const char cmd[] = "ATD0709124262\r\n";
+                        char cmd[32];
+                        strcpy(cmd, "ATD");
+                        strcat(cmd, dialnumber);
+                        strcat(cmd, "\r\n");
                         ser.printf(cmd);
                         pc.printf(cmd);
                     }
@@ -140,10 +154,10 @@ void phone()
 
         // Answer..
         if (status == WAIT && ringcounter > 0) {
-            const int num = getnumber();
-            if (num == -1)
+            const int dialRawValue = getDialRawValue();
+            if (dialRawValue < 50)
                 ringcode |= 1;
-            if (num == -2)
+            else if (dialRawValue > 950)
                 ringcode |= 2;
             if (ringcode == 3) {
                 answer();
@@ -154,6 +168,8 @@ void phone()
                 led2 = true;
                 led3 = true;
                 led4 = true;
+                
+                buzzer = 0;
             }
         }
 
@@ -165,12 +181,16 @@ void phone()
             if (status == TALK || status == DIAL) {
                 if (hangUpCounter > 0)
                     hangUpCounter--;
-                else {
+                else
                     hangUpCode = 0;
-                }
 
-                const int num = getnumber();
-                if ((num != hangUpCode) && (num == -1 || num == -2)) {
+                const int dialRawValue = getDialRawValue();
+                int num = 0;
+                if (dialRawValue < 50)
+                    num = 1;
+                else if (dialRawValue > 950)
+                    num = 2;
+                if ((num != hangUpCode) && (num == 1 || num == 2)) {
                     if (hangUpCode != 0) {
                         led1 = false;
                         led2 = false;
@@ -260,10 +280,10 @@ static void initADC(int pins)
 
 static int readADC(int pin)
 {
-    static const int AD_CR_START_MASK = 7 << 24;
-    static const int AD_CR_START_NOW  = 1 << 24;
-    static const int AD_CR_SELMASK    = 0xff;
-    static const int AD_DR_DONE       = 1UL << 31;
+    static const unsigned int AD_CR_START_MASK = 7 << 24;
+    static const unsigned int AD_CR_START_NOW  = 1 << 24;
+    static const unsigned int AD_CR_SELMASK    = 0xff;
+    static const unsigned int AD_DR_DONE       = 1UL << 31;
 
     if (pin < 15 || pin > 20)
         return 0;
@@ -291,7 +311,7 @@ void testaSnurrskivan()
         wait_ms(100);
 
         if (byteReceived == 0) {
-            pc.printf("%i\n", getnumber());
+            pc.printf("%i\n", getDialRawValue());
         } else {
             byteReceived--;
         }
@@ -310,6 +330,11 @@ int main()
 {
     ser.baud(115200);
     pc.baud(115200);
+
+    pc.printf("START!\r");
+
+    buzzer.period_us(250);
+    buzzer = 0;
 
     ser.attach(&receivebyte);
 

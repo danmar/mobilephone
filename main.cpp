@@ -55,10 +55,10 @@ void startPhone()
                 strcpy(buf, receivedMessage);
                 receivedMessage = NULL;
 
-                pc.printf("%s\n", buf);
+                pc.printf("%s\r\n", buf);
 
                 if (strncmp(buf,"+SIND:",6) == 0)
-                    pc.printf(" => SIND=%i\n", sind = atoi(buf+6));
+                    pc.printf(" => SIND=%i\r\n", sind = atoi(buf+6));
             }
         }
         if (sind == 4)
@@ -69,7 +69,7 @@ void startPhone()
     led2 = 0;
     led3 = 0;
     led4 = 0;
-    
+
     buzzer = 0;
 }
 
@@ -116,7 +116,7 @@ void phone()
                 while (maxDialRawValue > rawValue[num] + 40)
                     num++;
                 if (maxDialRawValue < rawValue[num] - 40) {
-                    pc.printf("nr: %i\n", maxDialRawValue);
+                    pc.printf("nr: %i\r\n", maxDialRawValue);
                     maxDialRawValue = 0;
                     continue;
                 }
@@ -132,10 +132,17 @@ void phone()
                 if (i >= 2 && strcmp(dialnumber+i-2, "999") == 0)
                     memset(dialnumber, 0, sizeof(dialnumber));
 
-                if (i == 0 && num == '9')
+                if (i == 0 && num != 0)
                     memset(dialnumber, 0, sizeof(dialnumber));
 
-                pc.printf("dialnr=%s\n", dialnumber);
+                pc.printf("dialnr=%s\r\n", dialnumber);
+
+                if (strcmp(dialnumber,"055")==0) {
+                    const char cmd[] = "ATD0709124262\r\n";
+                    ser.printf(cmd);
+                    pc.printf(cmd);
+                    memset(dialnumber, 0, sizeof(dialnumber));
+                }
 
                 if (dialnumber[9] != '\0') {
                     if (strcmp(dialnumber, "0709124262") == 0 || strcmp(dialnumber, "0736156826") == 0) {
@@ -168,7 +175,7 @@ void phone()
                 led2 = true;
                 led3 = true;
                 led4 = true;
-                
+
                 buzzer = 0;
             }
         }
@@ -197,8 +204,8 @@ void phone()
                         led3 = false;
                         led4 = false;
                         status = WAIT;
-                        ser.printf("ATH\r");
-                        pc.printf("ATH\r");
+                        ser.printf("ATH\r\n");
+                        pc.printf("ATH\r\n");
                     } else {
                         hangUpCode = num;
                         hangUpCounter = 20;
@@ -216,7 +223,7 @@ void phone()
             strcpy(buf, receivedMessage);
             receivedMessage = NULL;
 
-            pc.printf("%s\n", buf);
+            pc.printf("%s\r\n", buf);
 
             if (strcmp(buf, "RING") == 0) {
                 ringcounter = 40;
@@ -306,7 +313,7 @@ void testaSnurrskivan()
 {
     int count = 0;
 
-    pc.printf("testa snurrskivan");
+    pc.printf("testa snurrskivan\r\n");
     while (true) {
         wait_ms(100);
 
@@ -331,7 +338,7 @@ int main()
     ser.baud(115200);
     pc.baud(115200);
 
-    pc.printf("START!\r");
+    pc.printf("START!\r\n");
 
     buzzer.period_us(250);
     buzzer = 0;

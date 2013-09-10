@@ -32,7 +32,21 @@ module drawbox2(x,y,z,yoffset) {
     }
 }
 
-translate([-35,-50,-5]) {
-    drawbox2(70,140,10,50);
+module drawmbed() {
+    cube([65,35,10]);
 }
 
+module drawgsm() {
+    cube([65,85,5]);
+}
+
+translate([-35,-50,-5]) {
+    drawbox2(70,145,10,50);
+}
+
+translate([-30,-45,5]) {
+    drawmbed();
+}
+translate([-30,10,5]) {
+    drawgsm();
+}

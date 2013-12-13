@@ -43,7 +43,7 @@ void startPhone()
 
     while (true) {
         restart();
-        for (int counter = 0; sind != 4 && counter < 600; counter++) {
+        for (int counter = 0; sind != 11 && counter < 600; counter++) {
             wait_ms(100);
             led1 = ((counter & 3) == 0);
             led2 = ((counter & 3) == 1);
@@ -61,8 +61,18 @@ void startPhone()
                     pc.printf(" => SIND=%i\r\n", sind = atoi(buf+6));
             }
         }
-        if (sind == 4)
+        if (sind == 11)
             break;
+
+        pc.printf("Failed to login");
+        buzzer = 0.5;
+        wait(1);
+        buzzer = 0;
+    }
+
+    for (int i = 0; i < 10; i++) {
+        buzzer = (i & 1) * 0.5;
+        wait_ms(100);
     }
 
     led1 = 0;
